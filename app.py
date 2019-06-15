@@ -14,9 +14,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 
-#################################################
-# Database Setup
-#################################################
+# Setup Database
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db/bellybutton.sqlite"
 db = SQLAlchemy(app)
@@ -88,10 +86,6 @@ def samples(sample):
     # Filter the data based on the sample number and
     # only keep rows with values above 1
     sample_data = df.loc[df[sample] > 1, ["otu_id", "otu_label", sample]]
-
-    # Sort by sample
-    sample_data.sort_values(by=sample, ascending=False, inplace=True)
-
     # Format the data to send as json
     data = {
         "otu_ids": sample_data.otu_id.values.tolist(),
@@ -102,4 +96,4 @@ def samples(sample):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=5000, threaded=True)
